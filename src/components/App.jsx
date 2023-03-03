@@ -42,6 +42,21 @@ export class App extends Component {
     });
   };
 
+  // Додаємо до state: контмкти за умови що в LocalStorage щось є, інакше ігноруємо.
+  componentDidMount() {
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const visibleName = this.getVisibleName();
 
